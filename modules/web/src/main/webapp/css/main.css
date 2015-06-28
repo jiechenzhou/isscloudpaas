@@ -1,0 +1,4 @@
+@CHARSET "UTF-8";
+.container-fluid{
+	background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+}
