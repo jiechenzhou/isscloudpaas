@@ -1,0 +1,270 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.isoftstone</groupId>
+	<artifactId>isoftstone-web</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	
+	<repositories>
+		
+		<repository>
+			<id>releases</id>
+			<url>${nexus.root}/content/repositories/releases</url>
+		</repository>
+		
+		<repository>
+			<id>snapshots</id>
+			<url>${nexus.root}/content/repositories/snapshots</url>
+		</repository>
+	    
+		<repository>
+			<id>maven.central</id>
+			<url>${nexus.root}/content/repositories/central</url>
+		</repository>
+	
+		<repository>
+			<id>Activiti</id>
+			<url>${nexus.root}/content/repositories/activiti/</url>
+		</repository>
+		
+		<repository>
+			<id>thirdpart</id>
+			<url>${nexus.root}/nexus/content/repositories/thirdparty</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<nexus.root>http://220.249.113.11/nexus</nexus.root>
+		<gsoft.version>1.0.3-SNAPSHOT</gsoft.version>
+	</properties>
+	<!-- 本模块使用的包 -->
+	<dependencies>
+		<!--核心框架  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-core</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--核心框架上下文  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-context</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--标签  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-ui</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--公共web页面文件  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-resource</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--装饰器  -->
+		<dependency>
+			<groupId>com.gsoft.decorator</groupId>
+			<artifactId>gsoft-decorator-youi</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--安全框架  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-securityImpl</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--代码集  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-codemapImpl</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--工作流框架  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-workflowImpl</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--定时调度框架  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-job</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--文件上传  -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-upload</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- esb 核心包 -->
+		<dependency>
+			<groupId>com.gsoft.framework</groupId>
+			<artifactId>gsoft-framework-esb</artifactId>
+			<version>${gsoft.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- web 容器包 -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 需要支持servlet 3.0以上的web容器 -->
+		<dependency>
+			 <groupId>javax.servlet</groupId>
+    		<artifactId>javax.servlet-api</artifactId>
+    		<version>3.1.0</version>
+    		<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>integration</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-tomcat</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<path>${m2eclipse.wtp.contextRoot}</path>
+									<fork>true</fork>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<build>
+		<finalName>${pom.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+          		<artifactId>tomcat7-maven-plugin</artifactId>
+          		<version>2.2</version>
+				
+				<configuration>
+					<uriEncoding>UTF-8</uriEncoding>
+					<port>8088</port>
+					<path>/gsoft-web</path>
+				</configuration>
+			</plugin>
+			<plugin>  
+		        <groupId>org.apache.maven.plugins</groupId>  
+		        <artifactId>maven-compiler-plugin</artifactId>  
+		        <configuration>  
+		          <source>1.6</source>  
+		          <target>1.6</target>  
+		        </configuration>  
+		    </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration> 
+					<additionalProjectnatures>
+						<projectnature>org.eclipse.jdt.core.javanature</projectnature>
+						<projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+						<buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+					</additionalBuildcommands>
+				</configuration>
+			</plugin>
+		</plugins>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<configuration>
+						<addContextWarDependencies>true</addContextWarDependencies>
+<!-- 						<webapps> -->
+<!-- 							<webapp> -->
+<!-- 								<contextPath>/server-rmi</contextPath> -->
+<!-- 								<groupId>${pom.groupId}</groupId> -->
+<!-- 								<artifactId>gsoft-ea-server-rmi</artifactId> -->
+<!-- 								<version>${pom.version}</version> -->
+<!-- 								<type>war</type> -->
+<!-- 								<asWebapp>true</asWebapp> -->
+<!-- 							</webapp> -->
+							
+							
+<!-- 						</webapps> -->
+					</configuration>
+				</plugin>
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.7,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

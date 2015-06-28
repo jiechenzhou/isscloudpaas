@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.2.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.2.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-2.2.xsd
+		http://www.springframework.org/schema/integration/rmi http://www.springframework.org/schema/integration/rmi/spring-integration-rmi-2.2.xsd
+		http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws-2.2.xsd
+		http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp-2.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.2.xsd"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-file="http://www.springframework.org/schema/integration/file"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:int-mail="http://www.springframework.org/schema/integration/mail"
+	xmlns:int-rmi="http://www.springframework.org/schema/integration/rmi"
+	xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+	xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit">
+	
+	<context:component-scan base-package="com.gsoft.framework.esb.invoke"/>
+	
+	<bean id="exceptionTransform" class="com.gsoft.esb.transformer.ExceptionTransformer" />
+	<bean name="resConverter" class="com.gsoft.esb.converter.HttpResConverter"></bean>
+	
+	<!-- 配置标签中的URL类型的编码到实际路径的映射 -->
+	<bean class="com.gsoft.framework.ui.url.TagUrlTransformerImpl"/>
+<!-- 	<bean class="com.gsoft.framework.esb.adapter.EsbUrlTransformAdapter"> -->
+<!-- 		<property name="prefix" value="/esb/web/"></property> -->
+<!-- 		<property name="urlMappings"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="01000101" value="esb001/getUser.json"/> -->
+<!-- 				<entry key="01000102" value="esb001/getPagerUsers.json"/> -->
+<!-- 				<entry key="01000103" value="esb001/removeUser.json"/> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<bean id="esbAdapterRouter" class="com.gsoft.esb.router.EsbWebSecurityRequestRouter">
+		
+	</bean>
+	
+	<bean name="channelResolver" class="org.springframework.integration.support.channel.BeanFactoryChannelResolver"/>
+	
+	<bean class="org.springframework.integration.core.MessagingTemplate">
+		<property name="channelResolver" ref="channelResolver"></property>
+		<property name="receiveTimeout" value="10000"></property>
+	</bean>
+	
+	<!-- 字典工厂-->
+	<bean class="com.gsoft.framework.taglib.convert.ConvertProviderFactory">
+		<property name="cacheManager" ref="cacheManager"></property>
+		<property name="providers">
+			<list>
+				<bean class="com.gsoft.framework.taglib.convert.DefaultConvertProvider"/>
+<!-- 				<ref bean="codemapManager"/> -->
+			</list>
+		</property>
+	</bean>
+	
+	<int:transformer input-channel="exceptionChannel" ref="exceptionTransform" method="transformError"/>
+	
+	<int:router input-channel="start"  ref="esbAdapterRouter"/>
+	
+	<int:channel id="web"></int:channel>
+	<int:service-activator input-channel="web" ref="serviceFactory" method="exchange"></int:service-activator>
+	
+	<bean name="serviceFactory" class="com.gsoft.framework.esb.rmi.RmiServiceFactoryImpl">
+		<property name="serviceInvoker" ref="serviceInvoker"/>
+	</bean>
+	
+	<!-- 测试通道 ,仅供测试画面时使用-->
+<!-- 	<int:service-activator input-channel="web" ref="webTestData" method="bulid"></int:service-activator> -->
+<!-- 	<bean name="webTestData" class="com.gsoft.framework.esb.test.TestDataBuilderImpl"> -->
+<!-- 		<property name="sessionFactory" ref="sessionFactory"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	amqp 通道 -->
+<!-- 	<int-amqp:outbound-gateway id="inboundGateway" mapped-request-headers="EP_methodName,EP_serviceName,channel" -->
+<!-- 		request-channel="web" amqp-template="amqpTemplate" -->
+<!-- 		exchange-name="esb001.amqp.exchange"  -->
+<!-- 		order="1" reply-timeout="10000"  -->
+<!-- 		routing-key="esb001.amqp.binding"> -->
+		
+<!-- 	</int-amqp:outbound-gateway> -->
+
+<!-- 	<rabbit:connection-factory id="connectionFactory" host="localhost" username="guest" password="guest" /> -->
+		
+<!-- 	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"  -->
+<!-- 		reply-timeout="2000"  routing-key="esb001.amqp.binding" exchange="esb001.amqp.exchange" /> -->
+	
+</beans>

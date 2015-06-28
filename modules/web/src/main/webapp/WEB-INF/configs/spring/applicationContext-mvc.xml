@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:gsoft="http://www.springframework.org/schema/gsoft"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/gsoft http://www.springframework.org/schema/gsoft/spring-gsoft-1.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+			
+    <!-- ========================== WEB DEFINITIONS ======================= -->
+    
+    <import resource="applicationContext-mvc-http.xml" />
+	<!-- 平台提供的controller扫描 -->
+    <context:component-scan base-package="com.gsoft.framework.core.web"/>
+    
+    <gsoft:module-scan web="true"/>
+    
+    <!--  -->
+	<bean class="com.gsoft.framework.core.web.AnnotationHandlerMapping">
+	   <property name="interceptors">
+	    	<list>
+	    		<ref bean="openSessionInViewInterceptor"/>
+	    		<ref bean="localeChangeInterceptor"/>
+	    		<ref bean="themeChangeInterceptor"/>
+	    		<ref bean="webRequestInterceptor"/>
+	    	</list>
+	   </property>
+	   <property name="order" value="2"></property>
+	</bean>
+	
+	<!-- localeResolver 配置localResolver实现类 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+	<!-- 配置本地语言变化拦截器 -->
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+	<!-- 配置主题变化拦截器 -->
+	<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor"/>
+	<!-- 配置open session in view 拦截器 -->
+	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean class="com.gsoft.framework.core.web.view.WebDataRequestMappingHandlerAdapter">
+	   <property name="customArgumentResolvers">
+	    	<list>
+	    		<ref bean="dataInArgumentResolver"/>
+	    	</list>
+	   </property>
+	   
+	   <property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	 </bean>
+	
+	<bean name="transLogService" class="com.gsoft.framework.core.log.DefaultTransLogService"/>
+    <!--  异常处理 -->
+    <bean id="exceptionResolver" class="com.gsoft.framework.core.web.exception.DefaultHandlerExceptionResolver">  
+  		<property name="defaultErrorView" value="error/default"></property>
+  		<property name="exceptionMappings">  
+	   		<props>
+	   			<!-- domain 校验异常 -->
+	   			<prop key="com.gsoft.framework.core.exception.DomainValidatorException">error/domainValidator</prop>
+	   			<!-- domain 业务异常 -->
+	   			<prop key="com.gsoft.framework.core.exception.BusException">error/bus</prop>
+	  		</props>
+   		</property>  
+   	</bean>  
+   	
+	<bean id="viewResolver" 
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView">
+		</property>
+		<property name="prefix" value="/WEB-INF/pages/"></property>
+		<property name="suffix" value=".jsp"></property>
+		<property name="order" value="2" /> 
+	</bean>
+	
+    <mvc:default-servlet-handler />
+    
+</beans>

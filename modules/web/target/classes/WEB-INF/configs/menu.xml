@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus>
+	<menu id="050000" text="辅助开发">
+		<menu id="050101" text="菜单设计"  href="page/gsoft.webflow/start.html"></menu>
+		<menu id="050107" text="原型设计"  href="page/gsoft.dev.frontpage/frontpage.html"></menu>
+		<menu id="050102" text="模型设计"  href="demo/grid/010101.jsp"></menu>
+		<menu id="050103" text="表单设计"  href="demo/grid/010101.jsp"></menu>
+		<menu id="050105" text="数据源配置" href="demo/grid/010102.jsp"></menu>
+		<menu id="050106" text="通用查询" href="demo/grid/010102.jsp"></menu>
+	</menu>
+	<menu id="010000" text="公共管理">
+		<menu id="1010" text="功能权限11">
+			<menu id="010101" text="菜单管理"  href="demo/grid/010101.jsp"></menu>
+			<menu id="010102" text="角色管理" href="demo/grid/010102.jsp"></menu>
+			<menu id="010103" text="角色菜单" href="demo/grid/010103.jsp">
+				<menu id="0101030" text="角色管理" href="demo/grid/010102.jsp"></menu>
+			</menu>
+		</menu>
+		<menu id="010200" text="机构管理" href="page/security.agt.agency/agency.html"></menu>
+		<menu id="010300" text="角色管理" href="page/security.fuc.role/role.html"></menu>
+		<menu id="010400" text="用户管理" href="page/security.agt.user/user.html"></menu>
+		<menu id="010500" text="菜单管理" href="page/security.fuc.menu/menu.html"></menu>
+		
+		<menu id="010107" text="代码集管理" href="page/codemap/codemap.html"></menu>
+		<menu id="010108" text="系统日记" href="admin/transLog/index.html"></menu>
+	</menu>
+	<menu id="030000" text="需求管理">
+		<menu id="030101" text="菜单管理"  href="demo/grid/010101.jsp"></menu>
+		<menu id="030102" text="角色管理" href="demo/grid/010102.jsp"></menu>
+	</menu>
+	<menu id="040000" text="系统设计">
+		<menu id="040101" text="菜单管理"  href="demo/grid/010101.jsp"></menu>
+		<menu id="040102" text="角色管理" href="demo/grid/010102.jsp"></menu>
+	</menu>
+	
+	<menu id="060000" text="页面流程">
+		<menu id="060101" text="流程管理"  href="page/workflow.flow/flow.html"></menu>
+	</menu>
+	
+	<menu id="070000" text="定时调度">
+		<menu id="070101" text="调度配置"  href="page/scheduler.job/job.html"></menu>
+	</menu>
+</menus>
