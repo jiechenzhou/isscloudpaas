@@ -1,37 +1,74 @@
-<%@ include file="/WEB-INF/pages/include.jsp" %>
+<%@ include file="/WEB-INF/pages/include.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <youi:html i18n="i18n.index" title="i18n.index.title">
-	<head>
-		<%@ include file="/WEB-INF/pages/common/commonScriptAndCss_debug.jsp"%>
-		<%response.setHeader("Cache-Control","no-cache, no-store"); %>
-	</head>
+<head>
+<%@ include file="/WEB-INF/pages/common/commonScriptAndCss_debug.jsp"%>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store");
+%>
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Admin Panel</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+					<li><a href="#">Link</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Dropdown <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul></li>
+				</ul>
+				<form class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Link</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Dropdown <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+						</ul></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+</body>
+
+<script type="text/javascript">
 	
-	<youi:body decorator="youi">
-		
-	</youi:body>
-	
-	<script type="text/javascript">
-		$(function(){
-			//加载欢迎页面
-			open_welcome_page();
-			
-			//
-			//10秒钟刷新一次
-			//$.youi.noticeIntervals = window.setInterval(showUserNoticeStatus,1000*10);
-			//
-		});
-		/**
-		 * 打开首页
-		 */
-		function open_welcome_page(){
-			$('body',document).bootstrapLayout('loadPage','000000','welcome.html','首页&nbsp;&nbsp;');
-		}
-		/**
-		 * 打开密码修改框
-		 */
-		function open_header_modify_password(){
-			//$('body',document).borderLayout('loadPage','000001','modifyPassword.html','修改密码');
-		}
-		
-	</script>
+</script>
 </youi:html>
